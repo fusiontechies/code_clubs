@@ -3,3 +3,5 @@
     publish = "out"
 [functions]
   directory = "src/app/netlify/functions"
+[env]
+  NODE_VERSION = "20"
