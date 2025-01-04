@@ -222,7 +222,7 @@ export default function PreviousPage() {
                             {blog.miscellaneous && blog.miscellaneous.image && (
                                 <div className="mb-2">
                                     <img
-                                        src={`/uploads/${blog.miscellaneous.image}`}
+                                        src={blog.miscellaneous.image}
                                         alt="Miscellaneous"
                                         className="w-full object-cover rounded mt-2"
                                     />

@@ -1,13 +1,29 @@
 import { MongoClient } from 'mongodb';
 import { NextResponse } from 'next/server';
-import path from 'path';
-import { writeFile, mkdir } from 'fs/promises';
+import { v2 as cloudinary } from 'cloudinary';
 
 const uri = process.env.MONGODB_URI; // MongoDB URI
 const dbName = process.env.MONGODB_DB; // Database name
 const collectionName = process.env.MONGODB_COLLECTION; // Collection name
 
+// Configuration for Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 export async function POST(request) {
+    console.log('Environment Variables:');
+    console.log('MONGODB_URI:', uri);
+    console.log('MONGODB_DB:', dbName);
+    console.log('MONGODB_COLLECTION:', collectionName);
+    console.log('Cloudinary Config:', {
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+
     try {
         // Parse the incoming request body (form data)
         const formData = await request.formData();
@@ -20,24 +36,47 @@ export async function POST(request) {
         const miscellaneousText = formData.get('miscellaneousText');
         const file = formData.get('miscellaneousImage');
 
+        console.log('Form Data:', {
+            date,
+            createdBy,
+            career,
+            health,
+            achievement,
+            water,
+            miscellaneousText,
+            file
+        });
+
         // Initialize MongoDB client
-        const client = new MongoClient(uri);
+        const client = new MongoClient(uri, { connectTimeoutMS: 20000 });
 
         // Connect to the MongoDB server
+        console.log('Connecting to MongoDB...');
         await client.connect();
+        console.log('Connected to MongoDB');
+
         const db = client.db(dbName);
         const collection = db.collection(collectionName);
 
         // Prepare the image data if an image is included
-        let imagePath = null, filename = null;
+        let imageUrl = null;
         if (file) {
-            console.log(file.name);
             const buffer = Buffer.from(await file.arrayBuffer());
-            filename = Date.now() + file.name.replaceAll(' ', '_');
-            imagePath = path.join('public/uploads/', filename);
-            const uploadDir = path.join(process.cwd(), 'public/uploads/');
-            await mkdir(uploadDir, { recursive: true });
-            await writeFile(path.join(uploadDir, filename), buffer);
+            const uploadResult = await new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(
+                    { resource_type: 'image' },
+                    (error, result) => {
+                        if (error) {
+                            reject(new Error('Cloudinary upload failed: ' + error.message));
+                        } else {
+                            resolve(result);
+                        }
+                    }
+                );
+                uploadStream.end(buffer);
+            });
+            imageUrl = uploadResult.secure_url;
+            console.log('Image uploaded to Cloudinary at:', imageUrl);
         }
 
         // Construct the document to be saved in MongoDB
@@ -48,18 +87,23 @@ export async function POST(request) {
         if (health) document.health = JSON.parse(health);
         if (achievement) document.achievement = achievement;
         if (water) document.water = water;
-        if (miscellaneousText || imagePath) {
+        if (miscellaneousText || imageUrl) {
             document.miscellaneous = {
                 text: miscellaneousText,
-                image: filename, // Store the image path
+                image: imageUrl, // Store the Cloudinary image URL
+                imageId: imageUrl ? imageUrl.split('/').pop().split('.')[0] : null, // Extract the image ID
             };
         }
 
+        console.log('Document to be inserted:', document);
+
         // Insert the document into the MongoDB collection
         const result = await collection.insertOne(document);
+        console.log('Document inserted with ID:', result.insertedId);
 
         // Close MongoDB connection
         await client.close();
+        console.log('MongoDB connection closed');
 
         // Send a success response back to the frontend
         return NextResponse.json(
