@@ -1,5 +1,5 @@
 [build]
-  base = "src/app"         # The base directory where Netlify installs dependencies
-  package = "src/app"      # Where package.json is located
-  build = "npm run build"  # Command to build the Next.js app
-  publish = "src/app/.next" # Publish directory (output folder after build)
+    command = "npm run build && npm run export"
+    publish = "out"
+[functions]
+  directory = "src/app/netlify/functions"
