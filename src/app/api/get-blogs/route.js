@@ -5,6 +5,11 @@ const dbName = process.env.MONGODB_DB; // Database name
 const collectionName = process.env.MONGODB_COLLECTION; // Collection name
 
 export async function GET(request) {
+    console.log('Environment Variables:');
+    console.log('MONGODB_URI:', process.env.MONGODB_URI);
+    console.log('MONGODB_DB:', process.env.MONGODB_DB);
+    console.log('MONGODB_COLLECTION:', process.env.MONGODB_COLLECTION);
+
     const { searchParams } = new URL(request.url);
     const filterDate = searchParams.get('date');  // Get the date from query parameter (if provided)
     const createdBy = searchParams.get('user');
@@ -24,10 +29,8 @@ export async function GET(request) {
 
         let query = {};
         if (filterDate === 'all') {
-            // No filter applied, get all dates
             query = {};
         } else if (filterDate) {
-            // If a date is provided, filter by that date
             query.date = filterDate;
         } else {
             console.log('No filter date applied.');
@@ -39,7 +42,6 @@ export async function GET(request) {
 
         console.log('Query:', JSON.stringify(query));
 
-        // Fetch blogs based on the query
         const blogs = await collection.find(query, { projection: { createdBy: 0 } }).sort({ date: -1 }).toArray();
         console.log('Blogs fetched:', blogs.length);
 
