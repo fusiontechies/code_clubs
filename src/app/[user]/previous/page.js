@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter, notFound } from 'next/navigation';
 import '../../globals.css';
 
-const allowedUsers = process.env.users;
+const allowedUsers = process.env.NEXT_PUBLIC_USERS;
 
 export default function PreviousPage() {
     const { user } = useParams();

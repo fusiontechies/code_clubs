@@ -5,7 +5,7 @@ import { useParams, useRouter, notFound } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
 import { useEffect } from 'react';
 
-const allowedUsers = process.env.users;
+const allowedUsers = process.env.NEXT_PUBLIC_USERS;
 
 export default function TodayPage() {
     const { user } = useParams();

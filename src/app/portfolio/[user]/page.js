@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter, notFound } from 'next/navigation';
 import Image from 'next/image'; // For optimized images
 
-const allowedUsers = process.env.users;
+const allowedUsers = process.env.NEXT_PUBLIC_USERS;
 
 export default function Home() {
     const { user } = useParams();
