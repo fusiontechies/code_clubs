@@ -12,11 +12,15 @@ export async function GET(request) {
     let client;
 
     try {
+        console.log('Connecting to MongoDB...');
         client = new MongoClient(uri);
         await client.connect();
+        console.log('Connected to MongoDB');
 
         const db = client.db(dbName);
+        console.log(`Using database: ${dbName}`);
         const collection = db.collection(collectionName);
+        console.log(`Using collection: ${collectionName}`);
 
         let query = {};
         if (filterDate === 'all') {
@@ -33,10 +37,13 @@ export async function GET(request) {
             query.createdBy = createdBy;
         }
 
+        console.log('Query:', query);
+
         // Fetch blogs based on the query
         const blogs = await collection.find(query, { projection: { createdBy: 0 } }).sort({ date: -1 }).toArray();
+        console.log('Blogs fetched:', blogs.length);
 
-        return new Response(JSON.stringify(blogs), {
+        return new Response(JSON.stringify(blogs || []), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
         });
@@ -51,6 +58,7 @@ export async function GET(request) {
         );
     } finally {
         if (client) {
+            console.log('Closing MongoDB connection');
             await client.close();
         }
     }
