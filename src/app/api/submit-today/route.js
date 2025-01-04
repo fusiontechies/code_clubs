@@ -18,6 +18,9 @@ export async function POST(request) {
     console.log('MONGODB_URI:', uri);
     console.log('MONGODB_DB:', dbName);
     console.log('MONGODB_COLLECTION:', collectionName);
+    console.log('CLOUDINARY_CLOUD_NAME:', process.env.CLOUDINARY_CLOUD_NAME);
+    console.log('CLOUDINARY_API_KEY:', process.env.CLOUDINARY_API_KEY);
+    console.log('CLOUDINARY_API_SECRET:', process.env.CLOUDINARY_API_SECRET);
     console.log('Cloudinary Config:', {
         cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
         api_key: process.env.CLOUDINARY_API_KEY,
