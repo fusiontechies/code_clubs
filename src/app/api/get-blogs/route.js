@@ -19,8 +19,22 @@ export async function GET(request) {
     try {
         console.log('Connecting to MongoDB...');
         client = new MongoClient(uri, { connectTimeoutMS: 20000 });  // Increase timeout to 20 seconds
-        await client.connect();
-        console.log('Connected to MongoDB');
+        try {
+            await client.connect();
+            console.log('Connected to MongoDB');
+        } catch (connectError) {
+            if (connectError.name === 'MongoNetworkError') {
+                console.error('Connection timeout:', connectError);
+                return new Response(
+                    JSON.stringify({ message: 'Connection timeout', error: connectError.message }),
+                    {
+                        status: 504,
+                        headers: { 'Content-Type': 'application/json' },
+                    }
+                );
+            }
+            throw connectError;
+        }
 
         const db = client.db(dbName);
         console.log(`Using database: ${dbName}`);
