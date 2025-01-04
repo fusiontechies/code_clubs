@@ -13,7 +13,7 @@ export async function GET(request) {
 
     try {
         console.log('Connecting to MongoDB...');
-        client = new MongoClient(uri);
+        client = new MongoClient(uri, { connectTimeoutMS: 20000 });  // Increase timeout to 20 seconds
         await client.connect();
         console.log('Connected to MongoDB');
 
@@ -33,11 +33,11 @@ export async function GET(request) {
             console.log('No filter date applied.');
         }
 
-        if(createdBy) {
+        if (createdBy) {
             query.createdBy = createdBy;
         }
 
-        console.log('Query:', query);
+        console.log('Query:', JSON.stringify(query));
 
         // Fetch blogs based on the query
         const blogs = await collection.find(query, { projection: { createdBy: 0 } }).sort({ date: -1 }).toArray();
