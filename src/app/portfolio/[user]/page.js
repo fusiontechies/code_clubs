@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter, notFound } from 'next/navigation';
 import Image from 'next/image'; // For optimized images
+import ThemeSwitch from '@/components/ThemeSwitch';
+import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
 
 const allowedUsers = process.env.NEXT_PUBLIC_USERS;
 
@@ -19,7 +21,7 @@ export default function Home() {
     }, [user, router]);
 
     return (
-        <div className="min-h-screen bg-black text-white">
+        <div className="min-h-screen bg-white dark:bg-black text-dark dark:text-white">
             {/* Header */}
             <header className="text-center py-16 md:py-24">
                 <div className="flex justify-center mb-6">
@@ -37,28 +39,28 @@ export default function Home() {
                         </div>
                     )}
                 </div>
-                <h1 className="text-5xl font-bold text-white mb-4">{user.toUpperCase()}</h1>
+                <h1 className="text-5xl font-bold text-black dark:text-white mb-4">{user.toUpperCase()}</h1>
                 <p className="text-xl text-gray-400">Web Developer & Designer</p>
 
                 {/* Social Media Links */}
-                <div className="mt-6 space-x-6 text-gray-400">
+                {/* <div className="mt-6 space-x-6 text-white-100 dark:text-gray-400">
                     <a href={`https://github.com/${user}`} target="_blank" rel="noopener noreferrer">
-                        <i className="fab fa-github fa-2x hover:text-white transition"></i>
+                        <FaGithub className="fa-2x hover:text-white transition" />
                     </a>
                     <a href={`https://linkedin.com/in/${user}`} target="_blank" rel="noopener noreferrer">
-                        <i className="fab fa-linkedin fa-2x hover:text-white transition"></i>
+                        <FaLinkedin className="fa-2x hover:text-white transition" />
                     </a>
                     <a href={`https://twitter.com/${user}`} target="_blank" rel="noopener noreferrer">
-                        <i className="fab fa-twitter fa-2x hover:text-white transition"></i>
+                        <FaTwitter className="fa-2x hover:text-white transition" />
                     </a>
-                </div>
+                </div> */}
             </header>
 
             {/* About Section */}
-            <section className="py-20 px-6 md:px-12 bg-gray-900">
+            <section className="py-20 px-6 md:px-12 bg-gray-200 dark:bg-gray-900">
                 <div className="max-w-5xl mx-auto text-center">
-                    <h2 className="text-3xl font-semibold text-white mb-6">About Me</h2>
-                    <p className="text-lg text-gray-300">
+                    <h2 className="text-3xl font-semibold text-black dark:text-white mb-6">About Me</h2>
+                    <p className="text-lg text-gray-900 dark:text-gray-300">
                         I'm a passionate web developer with a focus on creating modern, user-friendly websites. I have experience
                         building full-stack applications using JavaScript frameworks like React, Next.js, and Node.js.
                     </p>
@@ -68,7 +70,7 @@ export default function Home() {
             {/* Skills Section */}
             <section className="py-20 px-6 md:px-12">
                 <div className="max-w-5xl mx-auto text-center">
-                    <h2 className="text-3xl font-semibold text-white mb-6">Skills</h2>
+                    <h2 className="text-3xl font-semibold text-black dark:text-white mb-6">Skills</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                         <div className="skill-item bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
                             <h3 className="text-xl text-white">JavaScript</h3>
@@ -99,20 +101,20 @@ export default function Home() {
             </section>
 
             {/* Projects Section */}
-            <section className="py-20 px-6 md:px-12 bg-gray-900">
+            <section className="py-20 px-6 md:px-12 bg-gray-200 dark:bg-gray-900">
                 <div className="max-w-5xl mx-auto text-center">
-                    <h2 className="text-3xl font-semibold text-white mb-6">Projects</h2>
+                    <h2 className="text-3xl font-semibold text-black dark:text-white mb-6">Projects</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <div className="bg-gray-800 p-8 rounded-lg shadow-xl hover:shadow-2xl transition duration-300">
-                            <h3 className="text-xl font-semibold text-white mb-4">Portfolio Website</h3>
+                        <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl hover:shadow-2xl transition duration-300">
+                            <h3 className="text-xl font-semibold text-black dark:text-white mb-4">Portfolio Website</h3>
                             <p className="text-gray-400">A personal portfolio to showcase my skills and projects.</p>
                         </div>
-                        <div className="bg-gray-800 p-8 rounded-lg shadow-xl hover:shadow-2xl transition duration-300">
-                            <h3 className="text-xl font-semibold text-white mb-4">E-Commerce App</h3>
+                        <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl hover:shadow-2xl transition duration-300">
+                            <h3 className="text-xl font-semibold text-black dark:text-white mb-4">E-Commerce App</h3>
                             <p className="text-gray-400">A full-stack e-commerce platform built with React and Node.js.</p>
                         </div>
-                        <div className="bg-gray-800 p-8 rounded-lg shadow-xl hover:shadow-2xl transition duration-300">
-                            <h3 className="text-xl font-semibold text-white mb-4">Social Media App</h3>
+                        <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl hover:shadow-2xl transition duration-300">
+                            <h3 className="text-xl font-semibold text-black dark:text-white mb-4">Social Media App</h3>
                             <p className="text-gray-400">A social media platform for connecting users with real-time chat features.</p>
                         </div>
                     </div>
@@ -120,23 +122,23 @@ export default function Home() {
             </section>
 
             {/* Contact Section */}
-            <section className="py-20 px-6 md:px-12 bg-gray-900">
+            <section className="py-20 px-6 md:px-12 bg-white dark:bg-gray-900">
                 <div className="max-w-5xl mx-auto text-center">
-                    <h2 className="text-3xl font-semibold text-white mb-6">Contact Me</h2>
+                    <h2 className="text-3xl font-semibold text-black dark:text-white mb-6">Contact Me</h2>
                     <form className="space-y-6">
                         <input
                             type="text"
                             placeholder="Your Name"
-                            className="w-full px-4 py-3 bg-gray-600 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-3 bg-gray-200 dark:bg-gray-600 text-black dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                         <input
                             type="email"
                             placeholder="Your Email"
-                            className="w-full px-4 py-3 bg-gray-600 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-3 bg-gray-200 dark:bg-gray-600 text-black dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                         <textarea
                             placeholder="Your Message"
-                            className="w-full px-4 py-3 bg-gray-600 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-3 bg-gray-200 dark:bg-gray-600 text-black dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         ></textarea>
                         <button
                             type="submit"
@@ -149,9 +151,10 @@ export default function Home() {
             </section>
 
             {/* Footer */}
-            <footer className="text-center py-8 bg-gray-800">
-                <p className="text-gray-400">© 2025 Code Clubs. All Rights Reserved.</p>
+            <footer className="text-center py-8 bg-gray-200 dark:bg-gray-800">
+                <p className="text-black dark:text-gray-400">© 2025 Code Clubs. All Rights Reserved.</p>
             </footer>
+            <ThemeSwitch />
         </div>
     );
 }

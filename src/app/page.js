@@ -26,7 +26,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center">
-      <h1 className="text-6xl md:text-5xl sm:text-4xl font-extrabold mb-10 text-gray-900 dark:text-white tracking-widest uppercase text-center mt-4">
+      <h1 className="text-4xl md:text-5xl sm:text-6xl font-extrabold mb-10 text-gray-900 dark:text-white tracking-widest uppercase text-center mt-4">
         Code Club Community Blogs
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-4 place-items-center">
