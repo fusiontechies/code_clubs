@@ -19,3 +19,9 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.cross-button {
+  width: 26px;
+  height: 26px;
+  font-size: 18px;
+}
